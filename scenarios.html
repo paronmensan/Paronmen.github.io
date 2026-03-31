@@ -14,7 +14,6 @@
       background: #f3f3f3;
       color: #222;
     }
-
     header, .section {
       background: #fff;
       padding: 28px;
@@ -22,33 +21,27 @@
       margin-bottom: 24px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
-
     h1, h2 {
       margin-top: 0;
     }
-
     nav {
       margin-top: 16px;
     }
-
     nav a {
       margin-right: 16px;
       color: #2b59c3;
       text-decoration: none;
       font-weight: bold;
     }
-
     nav a:hover {
       text-decoration: underline;
     }
-
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 18px;
       margin-top: 20px;
     }
-
     .card {
       background: #fafafa;
       border: 1px solid #ddd;
@@ -56,34 +49,29 @@
       padding: 18px;
       transition: 0.2s;
     }
-
     .card:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(0,0,0,0.08);
     }
-
     .card h3 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      font-size: 1.1em;
+      margin: 0 0 10px 0;
+      font-size: 1.05em;
+      line-height: 1.5;
+      word-break: break-all;
     }
-
     .card h3 a {
       color: #222;
       text-decoration: none;
     }
-
     .card h3 a:hover {
       color: #2b59c3;
       text-decoration: underline;
     }
-
     .meta {
       font-size: 0.95em;
       color: #555;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
-
     .tag {
       display: inline-block;
       background: #e8eefc;
@@ -92,85 +80,143 @@
       border-radius: 999px;
       font-size: 0.85em;
       margin-right: 6px;
-      margin-bottom: 6px;
+      margin-top: 6px;
     }
-
     .note {
       color: #666;
       font-size: 0.95em;
       margin-top: 16px;
     }
-
-    footer {
-      text-align: center;
-      color: #777;
-      font-size: 0.9em;
-      margin: 30px 0;
+    .count {
+      color: #666;
+      font-size: 0.95em;
+      margin-top: 8px;
+    }
+    .error {
+      color: #b00020;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-
   <header>
     <h1>回せるシナリオ一覧</h1>
-    <p>このサーバーで回せるシナリオをまとめています。タイトルを押すとBOOTHページに飛びます。</p>
-
+    <p>このサーバーで回せるシナリオ一覧です。タイトルを押すとBOOTHページに飛びます。</p>
     <nav>
       <a href="index.html">トップ</a>
       <a href="rules.html">ハウスルール</a>
     </nav>
+    <p class="count" id="countText">読み込み中...</p>
   </header>
 
   <div class="section">
     <h2>シナリオ一覧</h2>
-
-    <div class="grid">
-
-      <div class="card">
-        <h3><a href="https://k-books.booth.pm/items/3782958" target="_blank">シナリオ 1</a></h3>
-        <div class="meta">システム：CoC6 / 人数：1 / 時間：5 / 秘匿：No</div>
-      </div>
-
-      <div class="card">
-        <h3><a href="https://jahimitan.booth.pm/items/3594829" target="_blank">シナリオ 2</a></h3>
-        <div class="meta">システム：CoC6 / 人数：1 / 時間：5～7 / 秘匿：No</div>
-      </div>
-
-      <div class="card">
-        <h3><a href="https://kog46.booth.pm/items/6851194" target="_blank">シナリオ 3</a></h3>
-        <div class="meta">システム：CoC6 / 人数：1 / 時間：3~4 / 秘匿：No</div>
-      </div>
-
-      <div class="card">
-        <h3><a href="https://tada4kai.booth.pm/items/6593162" target="_blank">シナリオ 4</a></h3>
-        <div class="meta">システム：CoC6 / 人数：1 / 時間：1～2 / 秘匿：No</div>
-      </div>
-
-      <div class="card">
-        <h3><a href="https://yumetarou-tomato.booth.pm/items/6708691" target="_blank">シナリオ 5</a></h3>
-        <div class="meta">システム：CoC6 / 人数：1 / 時間：5 / 秘匿：No</div>
-      </div>
-
-      <!-- ここから下に同じ形で増やしていく -->
-
-      <div class="card">
-        <h3>片鱗</h3>
-        <div class="meta">システム：CoC6 / 人数：2 / 時間：不明 / 秘匿：No</div>
-      </div>
-
-      <div class="card">
-        <h3>ホテルアンデルセンへようこそ</h3>
-        <div class="meta">システム：CoC6 / 人数：6 / 時間：45～55 / 秘匿：Yes</div>
-      </div>
-
-    </div>
-
-    <p class="note">※ 一部のシナリオはBOOTHリンク付き、一部は未設定です。</p>
+    <div id="scenarioList" class="grid"></div>
+    <p class="note">※ 今のCSVでは「名前」列にURLが入っているため、表示名もURLになります。あとでNotion側でシナリオ名列を作れば、見た目はもっと綺麗にできます。</p>
   </div>
 
-  <footer>
-    <p>© TRPG Server</p>
-  </footer>
+  <script>
+    function parseCSVLine(line) {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
 
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const next = line[i + 1];
+
+        if (char === '"' && inQuotes && next === '"') {
+          current += '"';
+          i++;
+        } else if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          result.push(current);
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      result.push(current);
+      return result;
+    }
+
+    function parseCSV(text) {
+      const lines = text.trim().split(/\r?\n/).filter(Boolean);
+      if (lines.length === 0) return [];
+
+      const headers = parseCSVLine(lines[0]);
+      const rows = lines.slice(1).map(line => {
+        const values = parseCSVLine(line);
+        const obj = {};
+        headers.forEach((header, index) => {
+          obj[header] = values[index] ?? '';
+        });
+        return obj;
+      });
+      return rows;
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    async function loadScenarios() {
+      const list = document.getElementById('scenarioList');
+      const countText = document.getElementById('countText');
+
+      try {
+        const response = await fetch('kp-list.csv');
+        if (!response.ok) {
+          throw new Error('CSVを読み込めませんでした');
+        }
+
+        const csvText = await response.text();
+        const rows = parseCSV(csvText);
+
+        countText.textContent = `掲載件数：${rows.length}件`;
+
+        list.innerHTML = rows.map((row, index) => {
+          const url = row['名前'] || '';
+          const system = row['システム'] || '不明';
+          const players = row['人数'] || '不明';
+          const time = row['時間'] || '不明';
+          const secret = row['秘匿'] || '不明';
+
+          const displayTitle = url || `シナリオ ${index + 1}`;
+          const safeTitle = escapeHtml(displayTitle);
+          const safeSystem = escapeHtml(system);
+          const safePlayers = escapeHtml(players);
+          const safeTime = escapeHtml(time);
+          const safeSecret = escapeHtml(secret);
+
+          const titleHtml = url
+            ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${safeTitle}</a>`
+            : safeTitle;
+
+          return `
+            <div class="card">
+              <h3>${titleHtml}</h3>
+              <div class="meta">システム：${safeSystem}</div>
+              <div class="meta">人数：${safePlayers}</div>
+              <div class="meta">時間：${safeTime}</div>
+              <span class="tag">秘匿：${safeSecret}</span>
+            </div>
+          `;
+        }).join('');
+
+      } catch (error) {
+        countText.textContent = '読み込み失敗';
+        list.innerHTML = `<p class="error">CSVの読み込みに失敗しました。ファイル名が <code>kp-list.csv</code> になっているか確認してください。</p>`;
+      }
+    }
+
+    loadScenarios();
+  </script>
 </body>
 </html>
