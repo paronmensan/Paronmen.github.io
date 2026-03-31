@@ -112,7 +112,7 @@
   <div class="section">
     <h2>シナリオ一覧</h2>
     <div id="scenarioList" class="grid"></div>
-    <p class="note">※ 今のCSVでは「名前」列にURLが入っているため、表示名もURLになります。あとでNotion側でシナリオ名列を作れば、見た目はもっと綺麗にできます。</p>
+    <p class="note">※ 今のCSVでは「名前」列にURLが入っているため、表示名もURLになります。</p>
   </div>
 
   <script>
@@ -171,13 +171,22 @@
       const countText = document.getElementById('countText');
 
       try {
-        const response = await fetch('kp-list.csv');
-        if (!response.ok) {
+        const [res1, res2] = await Promise.all([
+          fetch('kp-list.csv'),
+          fetch('kp-list2.csv')
+        ]);
+
+        if (!res1.ok || !res2.ok) {
           throw new Error('CSVを読み込めませんでした');
         }
 
-        const csvText = await response.text();
-        const rows = parseCSV(csvText);
+        const csvText1 = await res1.text();
+        const csvText2 = await res2.text();
+
+        const rows1 = parseCSV(csvText1);
+        const rows2 = parseCSV(csvText2);
+
+        const rows = [...rows1, ...rows2];
 
         countText.textContent = `掲載件数：${rows.length}件`;
 
@@ -212,7 +221,7 @@
 
       } catch (error) {
         countText.textContent = '読み込み失敗';
-        list.innerHTML = `<p class="error">CSVの読み込みに失敗しました。ファイル名が <code>kp-list.csv</code> になっているか確認してください。</p>`;
+        list.innerHTML = `<p class="error">CSVの読み込みに失敗しました。<br>ファイル名が <code>kp-list.csv</code> と <code>kp-list2.csv</code> になっているか確認してください。</p>`;
       }
     }
 
