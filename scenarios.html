@@ -6,50 +6,171 @@
   <title>回せるシナリオ一覧</title>
   <style>
     body {
-      font-family: sans-serif;
-      max-width: 800px;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      max-width: 1100px;
       margin: 40px auto;
       padding: 0 16px;
       line-height: 1.8;
-      background: #f7f7f7;
+      background: #f3f3f3;
       color: #222;
     }
-    main {
-      background: white;
-      padding: 24px;
-      border-radius: 12px;
+
+    header, .section {
+      background: #fff;
+      padding: 28px;
+      border-radius: 14px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
-    a {
+
+    h1, h2 {
+      margin-top: 0;
+    }
+
+    nav {
+      margin-top: 16px;
+    }
+
+    nav a {
+      margin-right: 16px;
       color: #2b59c3;
       text-decoration: none;
+      font-weight: bold;
     }
-    a:hover {
+
+    nav a:hover {
       text-decoration: underline;
     }
-    .broken {
-      color: #444;
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
     }
-    .note {
+
+    .card {
+      background: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 18px;
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 1.1em;
+    }
+
+    .card h3 a {
+      color: #222;
+      text-decoration: none;
+    }
+
+    .card h3 a:hover {
+      color: #2b59c3;
+      text-decoration: underline;
+    }
+
+    .meta {
       font-size: 0.95em;
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #e8eefc;
+      color: #2349a5;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.85em;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+
+    .note {
       color: #666;
+      font-size: 0.95em;
+      margin-top: 16px;
+    }
+
+    footer {
+      text-align: center;
+      color: #777;
+      font-size: 0.9em;
+      margin: 30px 0;
     }
   </style>
 </head>
 <body>
-  <main>
+
+  <header>
     <h1>回せるシナリオ一覧</h1>
+    <p>このサーバーで回せるシナリオをまとめています。タイトルを押すとBOOTHページに飛びます。</p>
 
-    <ul>
-      <li>壊胎</li>
-      <li>傀逅</li>
-      <li>狂気山脈</li>
-      <li>風の又三郎</li>
-      <li class="broken">縺薙ｌ縺ｯ隕九※縺ｯ縺�↑縺�</li>
-    </ul>
+    <nav>
+      <a href="index.html">トップ</a>
+      <a href="rules.html">ハウスルール</a>
+    </nav>
+  </header>
 
-    <p class="note">※ 一部記録が正常に表示されていません。</p>
+  <div class="section">
+    <h2>シナリオ一覧</h2>
 
-    <p><a href="index.html">トップに戻る</a></p>
-  </main>
+    <div class="grid">
+
+      <div class="card">
+        <h3><a href="https://k-books.booth.pm/items/3782958" target="_blank">シナリオ 1</a></h3>
+        <div class="meta">システム：CoC6 / 人数：1 / 時間：5 / 秘匿：No</div>
+      </div>
+
+      <div class="card">
+        <h3><a href="https://jahimitan.booth.pm/items/3594829" target="_blank">シナリオ 2</a></h3>
+        <div class="meta">システム：CoC6 / 人数：1 / 時間：5～7 / 秘匿：No</div>
+      </div>
+
+      <div class="card">
+        <h3><a href="https://kog46.booth.pm/items/6851194" target="_blank">シナリオ 3</a></h3>
+        <div class="meta">システム：CoC6 / 人数：1 / 時間：3~4 / 秘匿：No</div>
+      </div>
+
+      <div class="card">
+        <h3><a href="https://tada4kai.booth.pm/items/6593162" target="_blank">シナリオ 4</a></h3>
+        <div class="meta">システム：CoC6 / 人数：1 / 時間：1～2 / 秘匿：No</div>
+      </div>
+
+      <div class="card">
+        <h3><a href="https://yumetarou-tomato.booth.pm/items/6708691" target="_blank">シナリオ 5</a></h3>
+        <div class="meta">システム：CoC6 / 人数：1 / 時間：5 / 秘匿：No</div>
+      </div>
+
+      <!-- ここから下に同じ形で増やしていく -->
+
+      <div class="card">
+        <h3>片鱗</h3>
+        <div class="meta">システム：CoC6 / 人数：2 / 時間：不明 / 秘匿：No</div>
+      </div>
+
+      <div class="card">
+        <h3>ホテルアンデルセンへようこそ</h3>
+        <div class="meta">システム：CoC6 / 人数：6 / 時間：45～55 / 秘匿：Yes</div>
+      </div>
+
+    </div>
+
+    <p class="note">※ 一部のシナリオはBOOTHリンク付き、一部は未設定です。</p>
+  </div>
+
+  <footer>
+    <p>© TRPG Server</p>
+  </footer>
+
 </body>
 </html>
